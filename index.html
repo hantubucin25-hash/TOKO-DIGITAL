@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toko Nusantara — Belanja Online Modern & Terpercaya</title>
+    <title>Toko Digital — Belanja Online Modern & Terpercaya</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter & Plus Jakarta Sans -->
@@ -51,7 +51,7 @@
                         <i data-lucide="shopping-bag" class="w-5 h-5 sm:w-6 sm:h-6"></i>
                     </div>
                     <div class="min-w-0">
-                        <h1 id="header-store-name" class="font-display font-bold text-lg sm:text-xl text-slate-900 truncate">Toko Nusantara</h1>
+                        <h1 id="header-store-name" class="font-display font-bold text-lg sm:text-xl text-slate-900 truncate">Toko Digital</h1>
                         <p id="header-store-tagline" class="text-xs text-slate-500 truncate hidden sm:block">Produk Pilihan Berkualitas & Pengiriman Cepat</p>
                     </div>
                 </div>
@@ -106,7 +106,7 @@
                         <span>Buka Setiap Hari • Pembayaran QRIS, Bank & E-Wallet</span>
                     </div>
                     <h2 id="hero-store-name" class="font-display text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
-                        Selamat Datang di Toko Nusantara
+                        Selamat Datang di Toko Digital
                     </h2>
                     <p id="hero-store-desc" class="text-sm sm:text-base text-slate-200 leading-relaxed">
                         Temukan koleksi produk pilihan terbaik dengan kualitas terjamin, harga bersahabat, dan layanan pengiriman cepat ke seluruh Indonesia.
@@ -424,7 +424,7 @@
     <footer class="bg-white border-t border-slate-200 mt-12 py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
             <div class="flex items-center gap-2">
-                <span class="font-display font-bold text-slate-800" id="footer-store-name">Toko Nusantara</span>
+                <span class="font-display font-bold text-slate-800" id="footer-store-name">Toko Digital</span>
                 <span>•</span>
                 <span>Belanja Aman & Terpercaya</span>
             </div>
@@ -451,7 +451,7 @@
                         <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-brand-600 absolute bottom-0 right-0"></span>
                     </div>
                     <div>
-                        <h4 class="font-bold text-sm" id="chat-store-title">Chat Toko Nusantara</h4>
+                        <h4 class="font-bold text-sm" id="chat-store-title">Chat Toko Digital</h4>
                         <p class="text-[11px] text-indigo-100">Online • Balas cepat dalam hitungan menit</p>
                     </div>
                 </div>
@@ -726,12 +726,12 @@
     <script>
         // --- 1. DATA DEFAULT & LOCALSTORAGE INITIALIZATION ---
         const STORAGE_KEYS = {
-            SETTINGS: 'toko_nusantara_settings_v1',
-            PRODUCTS: 'toko_nusantara_products_v1',
-            PAYMENTS: 'toko_nusantara_payments_v1',
-            CART: 'toko_nusantara_cart_v1',
-            ORDERS: 'toko_nusantara_orders_v1',
-            CHAT: 'toko_nusantara_chat_v1'
+            SETTINGS: 'toko_digital_settings_v1',
+            PRODUCTS: 'toko_digitala_products_v1',
+            PAYMENTS: 'toko_digital_payments_v1',
+            CART: 'toko_digital_cart_v1',
+            ORDERS: 'toko_digital_orders_v1',
+            CHAT: 'toko_digital_chat_v1'
         };
 
         // SVG QRIS Default (Generated clean vector QR code so it works offline without broken links)
@@ -762,9 +762,9 @@
         `);
 
         const defaultSettings = {
-            storeName: 'Toko Nusantara',
+            storeName: 'Toko Digital',
             tagline: 'Produk Pilihan Berkualitas & Pengiriman Cepat ke Seluruh Indonesia',
-            whatsapp: '6281234567890',
+            whatsapp: '6289631157242',
             adminPin: '1234'
         };
 
@@ -807,7 +807,7 @@
             },
             {
                 id: 'prod-5',
-                name: 'Jam Tangan Kayu Klasik Nusantara',
+                name: 'Jam Tangan Kayu Klasik Digital',
                 category: 'Fashion',
                 price: 320000,
                 stock: 7,
@@ -827,18 +827,18 @@
 
         const defaultPayments = {
             banks: [
-                { id: 'bank-1', name: 'Bank BCA', number: '8830123456', holder: 'PT Toko Nusantara Jaya' },
-                { id: 'bank-2', name: 'Bank Mandiri', number: '1310009876543', holder: 'PT Toko Nusantara Jaya' },
-                { id: 'bank-3', name: 'Bank BRI', number: '041201005432501', holder: 'PT Toko Nusantara Jaya' }
+                { id: 'bank-1', name: 'Bank BCA', number: '8830123456', holder: 'PT Toko Digital Jaya' },
+                { id: 'bank-2', name: 'Bank Mandiri', number: '1310009876543', holder: 'PT Toko Digital Jaya' },
+                { id: 'bank-3', name: 'Bank BRI', number: '041201005432501', holder: 'PT Toko Digital Jaya' }
             ],
             qris: {
-                merchantName: 'TOKO NUSANTARA OFFICIAL',
+                merchantName: 'TOKO DIGITAL OFFICIAL',
                 imageUrl: DEFAULT_QRIS_SVG
             },
             ewallets: [
-                { id: 'ew-1', name: 'GoPay', number: '081234567890', holder: 'Toko Nusantara' },
-                { id: 'ew-2', name: 'DANA', number: '081234567890', holder: 'Toko Nusantara' },
-                { id: 'ew-3', name: 'OVO / ShopeePay', number: '081234567890', holder: 'Toko Nusantara' }
+                { id: 'ew-1', name: 'GoPay', number: '089631157242', holder: 'Toko Digital' },
+                { id: 'ew-2', name: 'DANA', number: '08963115724', holder: 'Toko Digital' },
+                { id: 'ew-3', name: 'OVO / ShopeePay', number: '08963115724', holder: 'Toko Digital' }
             ]
         };
 
@@ -846,7 +846,7 @@
             {
                 id: 'msg-1',
                 sender: 'admin',
-                text: 'Halo Kak! Selamat datang di Toko Nusantara 👋 Ada produk yang sedang dicari atau ingin ditanyakan?',
+                text: 'Halo Kak! Selamat datang di Toko Digital 👋 Ada produk yang sedang dicari atau ingin ditanyakan?',
                 time: '09:00'
             }
         ];
