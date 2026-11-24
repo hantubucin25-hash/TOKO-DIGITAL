@@ -54,10 +54,10 @@
 
                 <!-- Right Actions -->
                 <div class="flex items-center gap-2 sm:gap-3">
-                    <!-- Admin Button -->
-                    <button onclick="openAdminModal()" class="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors" title="Kelola Toko & Produk">
-                        <i data-lucide="settings" class="w-4 h-4"></i>
-                        <span class="hidden sm:inline">Kelola Toko</span>
+                    <!-- Shipping Info Button -->
+                    <button onclick="openShippingModal()" class="inline-flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium text-slate-600 hover:text-brand-700 hover:bg-brand-50 transition-colors" title="Informasi Pengiriman & Ongkir">
+                        <i data-lucide="truck" class="w-4 h-4 text-brand-600"></i>
+                        <span class="hidden sm:inline">Info Pengiriman</span>
                     </button>
 
                     <!-- Cart Button -->
@@ -86,10 +86,13 @@
                 <p id="hero-subtitle" class="text-slate-300 text-sm sm:text-base mb-6 leading-relaxed">
                     Pilih produk favorit Anda, masukkan ke keranjang, dan selesaikan pesanan langsung terhubung dengan admin kami melalui WhatsApp.
                 </p>
-                <div class="flex flex-wrap gap-3 text-xs sm:text-sm text-slate-300">
+                <div class="flex flex-wrap items-center gap-3 text-xs sm:text-sm text-slate-300">
                     <span class="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg"><i data-lucide="check-circle-2" class="w-4 h-4 text-brand-400"></i> Respon Cepat</span>
                     <span class="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg"><i data-lucide="shield-check" class="w-4 h-4 text-brand-400"></i> Produk Terjamin</span>
-                    <span class="flex items-center gap-1.5 bg-white/10 px-3 py-1.5 rounded-lg"><i data-lucide="truck" class="w-4 h-4 text-brand-400"></i> Pengiriman Seluruh Indonesia</span>
+                    <button onclick="openShippingModal()" class="flex items-center gap-1.5 bg-brand-500/20 hover:bg-brand-500/30 text-brand-300 border border-brand-500/30 px-3 py-1.5 rounded-lg transition-colors cursor-pointer">
+                        <i data-lucide="truck" class="w-4 h-4 text-brand-400"></i>
+                        <span id="hero-shipping-badge">Gratis Ongkir Min. Rp 200.000</span>
+                    </button>
                 </div>
             </div>
             <!-- Decorative circle -->
@@ -147,11 +150,102 @@
                 <span>&copy; <span id="current-year"></span>. Hak Cipta Dilindungi.</span>
             </div>
             <div class="flex items-center gap-4 text-sm text-slate-500">
+                <button onclick="openShippingModal()" class="hover:text-slate-800 transition-colors">Info Pengiriman</button>
+                <span>•</span>
                 <span>Pemesanan Aman via WhatsApp</span>
-                <button onclick="openAdminModal()" class="text-brand-600 hover:underline font-medium">Mode Admin</button>
+                <!-- Ikon Gembok Rahasia untuk Admin -->
+                <button onclick="openPinModal()" class="p-1.5 text-slate-300 hover:text-slate-600 rounded-lg transition-colors" title="Akses Pemilik Toko">
+                    <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+                </button>
             </div>
         </div>
     </footer>
+
+    <!-- ===================================================================== -->
+    <!-- SHIPPING INFO MODAL (INFO PENGIRIMAN & TARIF)                         -->
+    <!-- ===================================================================== -->
+    <div id="shipping-modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs" onclick="closeShippingModal()"></div>
+        <div class="relative min-h-screen flex items-center justify-center p-4">
+            <div class="relative bg-white w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
+                <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <i data-lucide="truck" class="w-5 h-5 text-brand-400"></i>
+                        <h2 class="text-lg font-bold">Informasi Pengiriman</h2>
+                    </div>
+                    <button onclick="closeShippingModal()" class="p-1.5 text-slate-400 hover:text-white rounded-lg transition-colors">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <div class="p-6 space-y-5 text-sm text-slate-600">
+                    <!-- Promo Gratis Ongkir Banner -->
+                    <div id="modal-free-shipping-box" class="p-4 rounded-xl bg-brand-50 border border-brand-200 text-brand-900 flex items-start gap-3">
+                        <i data-lucide="gift" class="w-5 h-5 text-brand-600 shrink-0 mt-0.5"></i>
+                        <div>
+                            <h4 class="font-bold text-sm">Promo Gratis Ongkir!</h4>
+                            <p class="text-xs mt-0.5" id="modal-free-shipping-text">Nikmati subsidi gratis ongkir otomatis untuk minimum belanja Rp 200.000.</p>
+                        </div>
+                    </div>
+
+                    <!-- Jam Operasional -->
+                    <div class="space-y-1.5">
+                        <h4 class="font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="clock" class="w-4 h-4 text-slate-500"></i> Jam Operasional Pengiriman
+                        </h4>
+                        <p id="modal-shipping-hours" class="text-xs leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            Senin - Sabtu: Pesanan sebelum pukul 15.00 WIB dikirim di hari yang sama. Minggu & Hari Libur Nasional tidak ada pengiriman reguler.
+                        </p>
+                    </div>
+
+                    <!-- Daftar Layanan & Tarif -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-slate-900 flex items-center gap-2">
+                            <i data-lucide="package" class="w-4 h-4 text-slate-500"></i> Pilihan Layanan & Tarif flat
+                        </h4>
+                        <div id="modal-shipping-list" class="divide-y divide-slate-100 border border-slate-200 rounded-xl overflow-hidden">
+                            <!-- List opsi pengiriman dirender lewat JS -->
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <button onclick="closeShippingModal()" class="w-full py-2.5 bg-slate-900 text-white font-semibold rounded-xl hover:bg-slate-800 transition-colors">
+                            Mengerti
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- ADMIN PIN VERIFICATION MODAL                                          -->
+    <!-- ===================================================================== -->
+    <div id="pin-modal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs" onclick="closePinModal()"></div>
+        <div class="relative min-h-screen flex items-center justify-center p-4">
+            <div class="relative bg-white w-full max-w-sm rounded-2xl shadow-2xl border border-slate-200 p-6 text-center space-y-4">
+                <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-800 flex items-center justify-center mx-auto">
+                    <i data-lucide="key-round" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900">Verifikasi Pemilik Toko</h3>
+                    <p class="text-xs text-slate-500 mt-1">Masukkan PIN Admin untuk mengelola katalog & pengaturan.</p>
+                </div>
+                <form onsubmit="verifyAdminPin(event)" class="space-y-4">
+                    <input type="password" id="admin-pin-input" maxlength="10" placeholder="Masukkan PIN..." required
+                        class="w-full px-4 py-2.5 text-center tracking-widest font-bold text-lg bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
+                    <div class="flex gap-2">
+                        <button type="button" onclick="closePinModal()" class="flex-1 py-2.5 bg-slate-100 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-200 transition-colors">
+                            Batal
+                        </button>
+                        <button type="submit" class="flex-1 py-2.5 bg-slate-900 text-white text-sm font-semibold rounded-xl hover:bg-slate-800 transition-colors">
+                            Masuk
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- ===================================================================== -->
     <!-- CART DRAWER & CHECKOUT MODAL                                          -->
@@ -206,20 +300,25 @@
                     <textarea id="cust-address" rows="2" placeholder="Jalan, RT/RW, Kelurahan, Kecamatan, Kota, Kode Pos" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500"></textarea>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="space-y-3">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">Metode Pengiriman</label>
-                        <select id="cust-shipping" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
-                            <option value="Reguler (JNE/J&T/SiCepat)">Reguler (JNE/J&T)</option>
-                            <option value="Instan / Same Day (GoSend/Grab)">Instan / Same Day</option>
-                            <option value="Ambil di Toko (Self Pickup)">Ambil di Toko</option>
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="block text-xs font-semibold text-slate-700">Layanan Pengiriman *</label>
+                            <button type="button" onclick="openShippingModal()" class="text-[11px] font-medium text-brand-600 hover:underline">Lihat Info Kurir</button>
+                        </div>
+                        <select id="cust-shipping" onchange="updateCartUI()" class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
+                            <!-- Opsi pengiriman diisi dinamis oleh JS -->
                         </select>
+                        <p id="shipping-est-info" class="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
+                            <i data-lucide="clock" class="w-3 h-3"></i> <span>Estimasi tiba: 2-3 hari kerja</span>
+                        </p>
                     </div>
+
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Metode Pembayaran</label>
                         <select id="cust-payment" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
-                            <option value="Transfer Bank (BCA/Mandiri/BRI)">Transfer Bank</option>
-                            <option value="QRIS / E-Wallet (GoPay/OVO/Dana)">QRIS / E-Wallet</option>
+                            <option value="Transfer Bank (BCA/Mandiri/BRI)">Transfer Bank (BCA/Mandiri/BRI)</option>
+                            <option value="QRIS / E-Wallet (GoPay/OVO/Dana)">QRIS / E-Wallet (GoPay/OVO/Dana)</option>
                             <option value="COD (Bayar di Tempat)">COD (Bayar di Tempat)</option>
                         </select>
                     </div>
@@ -233,12 +332,28 @@
         </div>
 
         <!-- Drawer Footer -->
-        <div id="cart-footer" class="hidden p-6 border-t border-slate-200 bg-slate-50 space-y-4">
-            <div class="flex justify-between items-center">
-                <span class="text-sm font-medium text-slate-600">Total Belanja</span>
-                <span id="cart-subtotal" class="text-xl font-bold text-slate-900">Rp 0</span>
+        <div id="cart-footer" class="hidden p-6 border-t border-slate-200 bg-slate-50 space-y-3">
+            <!-- Free Shipping Progress Banner -->
+            <div id="free-shipping-progress" class="text-xs px-3 py-2 rounded-lg bg-brand-50 text-brand-800 border border-brand-200 flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-4 h-4 text-brand-600 shrink-0"></i>
+                <span id="free-shipping-msg">Belanja Rp 200.000 untuk Gratis Ongkir!</span>
             </div>
-            <p class="text-xs text-slate-500">*Ongkos kirim akan diinformasikan oleh admin melalui WhatsApp.</p>
+
+            <div class="space-y-1.5 text-sm">
+                <div class="flex justify-between text-slate-600">
+                    <span>Subtotal Produk</span>
+                    <span id="cart-subtotal" class="font-medium text-slate-900">Rp 0</span>
+                </div>
+                <div class="flex justify-between text-slate-600">
+                    <span>Ongkos Kirim</span>
+                    <span id="cart-shipping-cost" class="font-medium text-slate-900">Rp 0</span>
+                </div>
+                <div class="flex justify-between items-center pt-2 border-t border-slate-200">
+                    <span class="font-bold text-slate-900">Total Pembayaran</span>
+                    <span id="cart-grand-total" class="text-xl font-bold text-brand-700">Rp 0</span>
+                </div>
+            </div>
+
             <button onclick="checkoutWhatsApp()" class="w-full py-3.5 px-4 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl shadow-md shadow-brand-600/20 flex items-center justify-center gap-2 transition-all active:scale-[0.99]">
                 <i data-lucide="message-circle" class="w-5 h-5"></i>
                 <span>Pesan via WhatsApp</span>
@@ -267,15 +382,15 @@
                 </div>
 
                 <!-- Modal Tabs -->
-                <div class="flex border-b border-slate-200 bg-slate-50 px-6 gap-6">
-                    <button onclick="switchAdminTab('products')" id="tab-btn-products" class="py-3 text-sm font-semibold border-b-2 border-brand-600 text-brand-600 transition-colors">
+                <div class="flex border-b border-slate-200 bg-slate-50 px-6 gap-6 overflow-x-auto">
+                    <button onclick="switchAdminTab('products')" id="tab-btn-products" class="py-3 text-sm font-semibold border-b-2 border-brand-600 text-brand-600 whitespace-nowrap transition-colors">
                         Kelola Produk
                     </button>
-                    <button onclick="switchAdminTab('settings')" id="tab-btn-settings" class="py-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition-colors">
-                        Pengaturan Toko & WA
+                    <button onclick="switchAdminTab('settings')" id="tab-btn-settings" class="py-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 whitespace-nowrap transition-colors">
+                        Pengaturan Toko & Ongkir
                     </button>
-                    <button onclick="switchAdminTab('backup')" id="tab-btn-backup" class="py-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 transition-colors">
-                        Export / Import JSON
+                    <button onclick="switchAdminTab('backup')" id="tab-btn-backup" class="py-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-800 whitespace-nowrap transition-colors">
+                        Simpan Permanen ke GitHub
                     </button>
                 </div>
 
@@ -300,12 +415,12 @@
 
                                 <div>
                                     <label class="block text-xs font-semibold text-slate-700 mb-1">Kategori *</label>
-                                    <input type="text" id="prod-category" required placeholder="Contoh: Minuman, Pakaian, Elektronik" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                                    <input type="text" id="prod-category" required placeholder="Contoh: Minuman & Kopi" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
                                 </div>
 
                                 <div>
                                     <label class="block text-xs font-semibold text-slate-700 mb-1">Harga (Rp) *</label>
-                                    <input type="number" id="prod-price" required min="0" step="500" placeholder="Contoh: 75000" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                                    <input type="number" id="prod-price" required min="0" placeholder="Contoh: 85000" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
                                 </div>
 
                                 <div>
@@ -314,32 +429,32 @@
                                 </div>
 
                                 <div class="sm:col-span-2">
-                                    <label class="block text-xs font-semibold text-slate-700 mb-1">URL Gambar Produk (Opsional - kosongkan untuk gambar otomatis)</label>
-                                    <input type="url" id="prod-image" placeholder="https://contoh.com/gambar-produk.jpg" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">URL Gambar Produk (Opsional)</label>
+                                    <input type="url" id="prod-image" placeholder="https://contoh.com/gambar-produk.jpg (Kosongkan untuk ikon otomatis)" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
                                 </div>
 
                                 <div class="sm:col-span-2">
                                     <label class="block text-xs font-semibold text-slate-700 mb-1">Deskripsi Singkat</label>
-                                    <textarea id="prod-desc" rows="2" placeholder="Jelaskan keunggulan atau spesifikasi produk..." class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"></textarea>
+                                    <textarea id="prod-desc" rows="2" placeholder="Jelaskan keunggulan produk Anda..." class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"></textarea>
                                 </div>
 
-                                <div class="sm:col-span-2 flex justify-end gap-2 pt-2">
-                                    <button type="button" id="btn-cancel-edit" onclick="resetProductForm()" class="hidden px-4 py-2 bg-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-300 transition-colors">
-                                        Batal Edit
-                                    </button>
-                                    <button type="submit" class="px-5 py-2 bg-brand-600 text-white text-sm font-semibold rounded-xl hover:bg-brand-700 transition-colors flex items-center gap-2">
+                                <div class="sm:col-span-2 flex items-center gap-2 pt-1">
+                                    <button type="submit" class="px-5 py-2.5 bg-brand-600 text-white text-sm font-semibold rounded-xl hover:bg-brand-700 transition-colors flex items-center gap-2">
                                         <i data-lucide="save" class="w-4 h-4"></i>
                                         <span id="btn-save-prod-text">Simpan Produk</span>
+                                    </button>
+                                    <button type="button" id="btn-cancel-edit" onclick="resetProductForm()" class="hidden px-4 py-2.5 bg-slate-200 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-300 transition-colors">
+                                        Batal Edit
                                     </button>
                                 </div>
                             </form>
                         </div>
 
-                        <!-- Product List Table -->
+                        <!-- Admin Product List Table -->
                         <div>
                             <h3 class="text-sm font-bold text-slate-900 mb-3">Daftar Produk Saat Ini (<span id="admin-prod-count">0</span>)</h3>
                             <div class="overflow-x-auto border border-slate-200 rounded-xl">
-                                <table class="w-full text-left border-collapse">
+                                <table class="w-full text-left border-collapse text-sm">
                                     <thead>
                                         <tr class="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-600 uppercase">
                                             <th class="py-3 px-4">Produk</th>
@@ -349,23 +464,30 @@
                                             <th class="py-3 px-4 text-right">Aksi</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="admin-product-list" class="divide-y divide-slate-200 text-sm">
-                                        <!-- Admin product rows injected here -->
+                                    <tbody id="admin-product-list" class="divide-y divide-slate-200 bg-white">
+                                        <!-- Injected dynamically -->
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
 
-                    <!-- TAB 2: PENGATURAN TOKO -->
+                    <!-- TAB 2: PENGATURAN TOKO & ONGKIR -->
                     <div id="admin-tab-settings" class="hidden space-y-4 max-w-xl">
-                        <div class="bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-xl text-xs leading-relaxed">
-                            <strong>Catatan Penting:</strong> Pengaturan ini disimpan di browser Anda (LocalStorage). Jika Anda ingin mengubah pengaturan default untuk semua pengunjung di GitHub Pages, gunakan fitur <strong>Export JSON</strong> atau ubah variabel <code>DEFAULT_CONFIG</code> di dalam file <code>index.html</code>.
+                        <div class="bg-blue-50 border border-blue-200 text-blue-800 p-4 rounded-xl text-xs leading-relaxed">
+                            <strong>Info GitHub Pages:</strong> Perubahan di sini tersimpan sementara di browser Anda. Untuk menerapkannya secara permanen ke semua pengunjung di GitHub, buka tab <strong>Simpan Permanen ke GitHub</strong> setelah menyimpan pengaturan ini.
                         </div>
 
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Toko *</label>
-                            <input type="text" id="set-store-name" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Toko *</label>
+                                <input type="text" id="set-store-name" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">PIN Admin Baru *</label>
+                                <input type="text" id="set-admin-pin" maxlength="10" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
+                            </div>
                         </div>
 
                         <div>
@@ -373,15 +495,26 @@
                             <input type="text" id="set-store-tagline" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
                         </div>
 
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Nomor WhatsApp Admin (Format Internasional tanpa +) *</label>
-                            <input type="text" id="set-store-wa" placeholder="Contoh: 6281234567890" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
-                            <p class="text-xs text-slate-500 mt-1">Gunakan kode negara 62 di depan (misal: 62812... bukan 0812...).</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">No. WhatsApp Admin (628...) *</label>
+                                <input type="text" id="set-store-wa" placeholder="Contoh: 6281234567890" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Min. Belanja Gratis Ongkir (Rp)</label>
+                                <input type="number" id="set-free-shipping" min="0" step="5000" placeholder="0 = nonaktif" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
+                            </div>
                         </div>
 
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Judul Banner Utama</label>
                             <input type="text" id="set-hero-title" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Info Jam Operasional Pengiriman</label>
+                            <textarea id="set-shipping-hours" rows="2" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500"></textarea>
                         </div>
 
                         <div class="pt-2">
@@ -392,17 +525,35 @@
                         </div>
                     </div>
 
-                    <!-- TAB 3: EXPORT / IMPORT JSON -->
+                    <!-- TAB 3: SIMPAN PERMANEN KE GITHUB / BACKUP -->
                     <div id="admin-tab-backup" class="hidden space-y-6">
+                        <!-- Copy Code Snippet for GitHub Hardcode -->
+                        <div class="p-5 border border-brand-200 rounded-xl bg-brand-50/50 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <h4 class="font-bold text-slate-900 flex items-center gap-2">
+                                    <i data-lucide="code-2" class="w-5 h-5 text-brand-600"></i>
+                                    Salin Kode Konfigurasi Permanen (Untuk GitHub)
+                                </h4>
+                                <button onclick="copyConfigCodeForGitHub()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-semibold rounded-xl transition-colors flex items-center gap-1.5 shadow-xs">
+                                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                    <span>Salin Kode JS</span>
+                                </button>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Klik tombol <strong>Salin Kode JS</strong> di atas, lalu buka file <code>index.html</code> Anda di GitHub dan gantikan bagian <code>STORE_CONFIG</code> & <code>DEFAULT_PRODUCTS</code> dengan kode yang baru disalin agar semua pembeli melihat katalog & pengaturan terbaru.
+                            </p>
+                            <textarea id="github-export-code" readonly rows="5" class="w-full p-3 bg-slate-900 text-brand-300 font-mono text-xs rounded-xl focus:outline-none"></textarea>
+                        </div>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Export Card -->
                             <div class="p-5 border border-slate-200 rounded-xl bg-slate-50 space-y-3">
                                 <div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center">
                                     <i data-lucide="download" class="w-5 h-5"></i>
                                 </div>
-                                <h4 class="font-bold text-slate-900">Export Data Toko (JSON)</h4>
+                                <h4 class="font-bold text-slate-900">Download Backup JSON</h4>
                                 <p class="text-xs text-slate-600 leading-relaxed">
-                                    Unduh seluruh data produk dan pengaturan toko Anda dalam format file <code>.json</code> sebagai cadangan (backup) atau untuk dipindahkan ke perangkat lain.
+                                    Unduh cadangan data toko dalam format file <code>.json</code> ke perangkat Anda.
                                 </p>
                                 <button onclick="exportDataJSON()" class="w-full py-2.5 px-4 bg-slate-900 text-white text-sm font-medium rounded-xl hover:bg-slate-800 transition-colors">
                                     Download File JSON
@@ -411,12 +562,12 @@
 
                             <!-- Import Card -->
                             <div class="p-5 border border-slate-200 rounded-xl bg-slate-50 space-y-3">
-                                <div class="w-10 h-10 rounded-lg bg-brand-100 text-brand-600 flex items-center justify-center">
+                                <div class="w-10 h-10 rounded-lg bg-slate-200 text-slate-700 flex items-center justify-center">
                                     <i data-lucide="upload" class="w-5 h-5"></i>
                                 </div>
-                                <h4 class="font-bold text-slate-900">Import Data Toko (JSON)</h4>
+                                <h4 class="font-bold text-slate-900">Restore dari File JSON</h4>
                                 <p class="text-xs text-slate-600 leading-relaxed">
-                                    Unggah file backup <code>.json</code> yang sebelumnya telah Anda export untuk memulihkan katalog produk dan pengaturan toko.
+                                    Unggah file backup <code>.json</code> untuk memulihkan data katalog dan pengaturan.
                                 </p>
                                 <label class="block w-full py-2.5 px-4 bg-white border border-slate-300 text-slate-700 text-sm font-medium rounded-xl hover:bg-slate-100 transition-colors text-center cursor-pointer">
                                     <span>Pilih File JSON...</span>
@@ -428,8 +579,8 @@
                         <!-- Reset Factory Default -->
                         <div class="pt-4 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                             <div>
-                                <h4 class="text-sm font-bold text-red-600">Reset ke Data Bawaan</h4>
-                                <p class="text-xs text-slate-500">Hapus semua perubahan lokal dan kembalikan katalog ke contoh produk awal.</p>
+                                <h4 class="text-sm font-bold text-red-600">Reset Cache Browser</h4>
+                                <p class="text-xs text-slate-500">Hapus perubahan lokal di browser ini dan muat ulang data bawaan dari kode <code>index.html</code>.</p>
                             </div>
                             <button onclick="confirmResetFactory()" id="btn-factory-reset" class="px-4 py-2 bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 text-xs font-semibold rounded-xl transition-colors">
                                 Reset Data Awal
@@ -447,14 +598,26 @@
     <!-- ===================================================================== -->
     <script>
         // =====================================================================
-        // 1. KONFIGURASI BAWAAN (UBAH BAGIAN INI SEBELUM UPLOAD KE GITHUB)
+        // 1. KONFIGURASI PERMANEN TOKO (EDIT BAGIAN INI UNTUK GITHUB PAGES)
+        // Catatan: Karena GitHub Pages bersifat statis, ubah nilai di bawah ini
+        // sebelum meng-upload file index.html agar semua pembeli melihat data ini.
         // =====================================================================
-        const DEFAULT_CONFIG = {
+        const STORE_CONFIG = {
             storeName: "Toko Digital",
             tagline: "Belanja Mudah & Cepat via WhatsApp",
             whatsappNumber: "6289631157242", // Ganti dengan nomor WA Anda (awalan 62)
+            adminPin: "1234",                  // PIN untuk membuka Panel Admin (ikon gembok di footer)
+            freeShippingMin: 200000,           // Minimal belanja untuk Gratis Ongkir (isi 0 jika tidak ada)
             heroTitle: "Temukan Produk Pilihan Terbaik Untuk Anda",
-            heroSubtitle: "Pilih produk favorit Anda, masukkan ke keranjang, dan selesaikan pesanan langsung terhubung dengan admin kami melalui WhatsApp."
+            heroSubtitle: "Pilih produk favorit Anda, masukkan ke keranjang, dan selesaikan pesanan langsung terhubung dengan admin kami melalui WhatsApp.",
+            shippingHours: "Senin - Sabtu: Pesanan sebelum pukul 15.00 WIB dikirim di hari yang sama. Minggu & Hari Libur Nasional tidak ada pengiriman reguler.",
+            shippingOptions: [
+                { id: "reguler", name: "Reguler (JNE / J&T / SiCepat)", cost: 15000, estimate: "2-3 hari kerja" },
+                { id: "hemat", name: "Hemat / Kargo Ekonomi", cost: 10000, estimate: "3-5 hari kerja" },
+                { id: "express", name: "Express / Next Day", cost: 25000, estimate: "1 hari kerja" },
+                { id: "sameday", name: "Instan / Same Day (Kurir Lokal)", cost: 20000, estimate: "Tiba hari yang sama" },
+                { id: "pickup", name: "Ambil di Toko (Self Pickup)", cost: 0, estimate: "Siap diambil dalam 1 jam" }
+            ]
         };
 
         const DEFAULT_PRODUCTS = [
@@ -518,9 +681,9 @@
         // 2. STATE MANAGEMENT & LOCALSTORAGE
         // =====================================================================
         const STORAGE_KEYS = {
-            CONFIG: 'tokoku_config_v1',
-            PRODUCTS: 'tokoku_products_v1',
-            CART: 'tokoku_cart_v1'
+            CONFIG: 'tokoku_config_v2',
+            PRODUCTS: 'tokoku_products_v2',
+            CART: 'tokoku_cart_v2'
         };
 
         let storeConfig = {};
@@ -534,17 +697,26 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadData();
             applyStoreConfig();
+            renderShippingOptions();
             renderCategories();
             renderProducts();
             updateCartUI();
             document.getElementById('current-year').textContent = new Date().getFullYear();
             lucide.createIcons();
+
+            // Shortcut Rahasia Keyboard: Ctrl + Shift + A untuk membuka PIN Admin
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+                    e.preventDefault();
+                    openPinModal();
+                }
+            });
         });
 
         function loadData() {
             try {
                 const savedConfig = localStorage.getItem(STORAGE_KEYS.CONFIG);
-                storeConfig = savedConfig ? JSON.parse(savedConfig) : { ...DEFAULT_CONFIG };
+                storeConfig = savedConfig ? { ...STORE_CONFIG, ...JSON.parse(savedConfig) } : { ...STORE_CONFIG };
 
                 const savedProducts = localStorage.getItem(STORAGE_KEYS.PRODUCTS);
                 products = savedProducts ? JSON.parse(savedProducts) : [...DEFAULT_PRODUCTS];
@@ -553,7 +725,7 @@
                 cart = savedCart ? JSON.parse(savedCart) : [];
             } catch (e) {
                 console.error("Gagal memuat data dari LocalStorage:", e);
-                storeConfig = { ...DEFAULT_CONFIG };
+                storeConfig = { ...STORE_CONFIG };
                 products = [...DEFAULT_PRODUCTS];
                 cart = [];
             }
@@ -570,66 +742,28 @@
         }
 
         // =====================================================================
-        // 3. FORMATTER & HELPER UI
+        // 3. HELPER FUNCTIONS (FORMATTER, TOAST & GAMBAR PRODUK)
         // =====================================================================
-        function formatRupiah(number) {
+        function formatRupiah(angka) {
             return new Intl.NumberFormat('id-ID', {
                 style: 'currency',
                 currency: 'IDR',
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0
-            }).format(number);
-        }
-
-        // Generator Gambar SVG Placeholder Estetik berdasarkan kategori/nama
-        function getProductImageHTML(product) {
-            if (product.image && product.image.trim() !== "") {
-                return `<img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.onerror=null; this.parentElement.innerHTML=getFallbackSVG('${product.name.replace(/'/g, "")}', '${product.category.replace(/'/g, "")}')">`;
-            }
-            return getFallbackSVG(product.name, product.category);
-        }
-
-        function getFallbackSVG(name, category) {
-            // Pilih warna lembut berdasarkan panjang teks agar bervariasi namun tetap harmonis
-            const palettes = [
-                { bg: '#f0fdf4', fg: '#16a34a', accent: '#bbf7d0' }, // Emerald
-                { bg: '#eff6ff', fg: '#2563eb', accent: '#bfdbfe' }, // Blue
-                { bg: '#fefce8', fg: '#ca8a04', accent: '#fef08a' }, // Amber
-                { bg: '#faf5ff', fg: '#9333ea', accent: '#e9d5ff' }, // Purple
-                { bg: '#fff1f2', fg: '#e11d48', accent: '#fecdd3' }  // Rose
-            ];
-            const idx = (name.length + category.length) % palettes.length;
-            const p = palettes[idx];
-            const initials = name.substring(0, 2).toUpperCase();
-
-            return `
-                <div class="w-full h-full flex flex-col items-center justify-center p-6 select-none transition-transform duration-300 group-hover:scale-105" style="background-color: ${p.bg};">
-                    <svg class="w-16 h-16 mb-2" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="8" y="8" width="48" height="48" rx="14" fill="${p.accent}" />
-                        <path d="M22 26C22 23.7909 23.7909 22 26 22H38C40.2091 22 42 23.7909 42 26V38C42 40.2091 40.2091 42 38 42H26C23.7909 42 22 40.2091 22 38V26Z" stroke="${p.fg}" stroke-width="2.5"/>
-                        <circle cx="28.5" cy="28.5" r="2" fill="${p.fg}"/>
-                        <path d="M22 37L28 31L33 36L36 33L42 39" stroke="${p.fg}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <span class="text-xs font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full" style="color: ${p.fg}; background-color: ${p.accent}80;">
-                        ${initials} • ${category}
-                    </span>
-                </div>
-            `;
+            }).format(angka || 0);
         }
 
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
+            if (!container) return;
             const toast = document.createElement('div');
             
-            const bgColor = type === 'error' ? 'bg-red-600' : (type === 'info' ? 'bg-slate-800' : 'bg-brand-600');
+            const bgClass = type === 'error' ? 'bg-red-600' : (type === 'info' ? 'bg-slate-800' : 'bg-brand-600');
             const iconName = type === 'error' ? 'alert-circle' : (type === 'info' ? 'info' : 'check-circle');
 
-            toast.className = `${bgColor} text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-2.5 text-sm font-medium transform transition-all duration-300 translate-y-2 opacity-0 pointer-events-auto max-w-sm`;
-            toast.innerHTML = `
-                <i data-lucide="${iconName}" class="w-4 h-4 shrink-0"></i>
-                <span>${message}</span>
-            `;
-
+            toast.className = `${bgClass} text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-2.5 text-sm font-medium transform transition-all duration-300 translate-y-2 opacity-0 pointer-events-auto`;
+            toast.innerHTML = `<i data-lucide="${iconName}" class="w-4 h-4 shrink-0"></i><span>${message}</span>`;
+            
             container.appendChild(toast);
             lucide.createIcons();
 
@@ -643,8 +777,18 @@
             }, 3000);
         }
 
+        function getProductImageHTML(product) {
+            const safeName = product.name.replace(/"/g, '&quot;');
+            const fallbackUrl = `https://placehold.co/600x400/f1f5f9/475569?text=${encodeURIComponent(product.name)}`;
+            const imgSrc = product.image && product.image.trim() !== '' ? product.image : fallbackUrl;
+            
+            return `<img src="${imgSrc}" alt="${safeName}" 
+                onerror="this.onerror=null;this.src='${fallbackUrl}';" 
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">`;
+        }
+
         // =====================================================================
-        // 4. KATALOG, PENCARIAN & FILTER
+        // 4. KATALOG, PENCARIAN, INFO PENGIRIMAN & FILTER
         // =====================================================================
         function applyStoreConfig() {
             document.title = `${storeConfig.storeName} - Katalog & Belanja Online`;
@@ -653,6 +797,55 @@
             document.getElementById('footer-store-name').textContent = storeConfig.storeName;
             document.getElementById('hero-title').textContent = storeConfig.heroTitle;
             document.getElementById('hero-subtitle').textContent = storeConfig.heroSubtitle;
+
+            // Update Info Pengiriman di Banner & Modal
+            const heroBadge = document.getElementById('hero-shipping-badge');
+            const modalFreeBox = document.getElementById('modal-free-shipping-box');
+            const modalFreeText = document.getElementById('modal-free-shipping-text');
+
+            if (storeConfig.freeShippingMin && storeConfig.freeShippingMin > 0) {
+                heroBadge.textContent = `Gratis Ongkir Min. ${formatRupiah(storeConfig.freeShippingMin)}`;
+                modalFreeBox.classList.remove('hidden');
+                modalFreeText.textContent = `Nikmati Gratis Ongkir otomatis untuk minimum belanja produk sebesar ${formatRupiah(storeConfig.freeShippingMin)}.`;
+            } else {
+                heroBadge.textContent = "Info Pengiriman & Kurir";
+                modalFreeBox.classList.add('hidden');
+            }
+
+            document.getElementById('modal-shipping-hours').textContent = storeConfig.shippingHours || STORE_CONFIG.shippingHours;
+        }
+
+        function renderShippingOptions() {
+            const selectEl = document.getElementById('cust-shipping');
+            const modalListEl = document.getElementById('modal-shipping-list');
+            const options = storeConfig.shippingOptions || STORE_CONFIG.shippingOptions;
+
+            selectEl.innerHTML = options.map(opt => {
+                const costLabel = opt.cost === 0 ? 'Gratis' : formatRupiah(opt.cost);
+                return `<option value="${opt.id}">${opt.name} (${costLabel})</option>`;
+            }).join('');
+
+            modalListEl.innerHTML = options.map(opt => {
+                const costLabel = opt.cost === 0 ? '<span class="text-brand-600 font-bold">Gratis</span>' : `<span class="font-bold text-slate-900">${formatRupiah(opt.cost)}</span>`;
+                return `
+                    <div class="p-3 bg-white flex justify-between items-center gap-3">
+                        <div>
+                            <div class="font-semibold text-slate-900 text-xs">${opt.name}</div>
+                            <div class="text-[11px] text-slate-500">Estimasi tiba: ${opt.estimate}</div>
+                        </div>
+                        <div class="text-xs shrink-0">${costLabel}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openShippingModal() {
+            document.getElementById('shipping-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeShippingModal() {
+            document.getElementById('shipping-modal').classList.add('hidden');
         }
 
         function renderCategories() {
@@ -848,6 +1041,11 @@
             const checkoutSection = document.getElementById('checkout-form-section');
             const footer = document.getElementById('cart-footer');
             const subtotalEl = document.getElementById('cart-subtotal');
+            const shippingCostEl = document.getElementById('cart-shipping-cost');
+            const grandTotalEl = document.getElementById('cart-grand-total');
+            const estInfoEl = document.getElementById('shipping-est-info');
+            const freeShipProgress = document.getElementById('free-shipping-progress');
+            const freeShipMsg = document.getElementById('free-shipping-msg');
 
             // Bersihkan item keranjang jika produknya sudah dihapus oleh admin
             cart = cart.filter(item => products.some(p => p.id === item.productId));
@@ -905,7 +1103,41 @@
                 `;
             }).join('');
 
+            // Hitung Ongkos Kirim & Gratis Ongkir
+            const options = storeConfig.shippingOptions || STORE_CONFIG.shippingOptions;
+            const selectedShipId = document.getElementById('cust-shipping').value;
+            const selectedShip = options.find(o => o.id === selectedShipId) || options[0];
+
+            estInfoEl.innerHTML = `<i data-lucide="clock" class="w-3 h-3"></i> <span>Estimasi tiba: <strong>${selectedShip.estimate}</strong></span>`;
+
+            let finalShippingCost = selectedShip.cost;
+            const minFree = storeConfig.freeShippingMin || 0;
+
+            if (minFree > 0) {
+                freeShipProgress.classList.remove('hidden');
+                if (subtotal >= minFree) {
+                    finalShippingCost = 0;
+                    freeShipMsg.innerHTML = `Selamat! Anda mendapatkan <strong>GRATIS ONGKIR</strong>.`;
+                } else {
+                    const diff = minFree - subtotal;
+                    freeShipMsg.innerHTML = `Tambah belanja <strong>${formatRupiah(diff)}</strong> lagi untuk Gratis Ongkir!`;
+                }
+            } else {
+                freeShipProgress.classList.add('hidden');
+            }
+
+            const grandTotal = subtotal + finalShippingCost;
+
             subtotalEl.textContent = formatRupiah(subtotal);
+            if (finalShippingCost === 0 && selectedShip.cost > 0) {
+                shippingCostEl.innerHTML = `<span class="line-through text-slate-400 text-xs mr-1">${formatRupiah(selectedShip.cost)}</span> <span class="text-brand-600 font-bold">GRATIS</span>`;
+            } else if (finalShippingCost === 0) {
+                shippingCostEl.innerHTML = `<span class="text-brand-600 font-bold">Gratis</span>`;
+            } else {
+                shippingCostEl.textContent = formatRupiah(finalShippingCost);
+            }
+            grandTotalEl.textContent = formatRupiah(grandTotal);
+
             lucide.createIcons();
         }
 
@@ -917,7 +1149,7 @@
 
             const name = document.getElementById('cust-name').value.trim();
             const address = document.getElementById('cust-address').value.trim();
-            const shipping = document.getElementById('cust-shipping').value;
+            const selectedShipId = document.getElementById('cust-shipping').value;
             const payment = document.getElementById('cust-payment').value;
             const notes = document.getElementById('cust-notes').value.trim();
 
@@ -933,33 +1165,46 @@
             }
 
             // Susun daftar pesanan
-            let totalAmount = 0;
+            let subtotal = 0;
             let itemsText = "";
 
             cart.forEach((item, index) => {
                 const product = products.find(p => p.id === item.productId);
                 if (product) {
                     const lineTotal = product.price * item.qty;
-                    totalAmount += lineTotal;
+                    subtotal += lineTotal;
                     itemsText += `${index + 1}. *${product.name}*\n   ${item.qty} x ${formatRupiah(product.price)} = ${formatRupiah(lineTotal)}\n`;
                 }
             });
+
+            // Hitung Ongkir
+            const options = storeConfig.shippingOptions || STORE_CONFIG.shippingOptions;
+            const selectedShip = options.find(o => o.id === selectedShipId) || options[0];
+            const minFree = storeConfig.freeShippingMin || 0;
+            const isFreeShipping = (minFree > 0 && subtotal >= minFree) || selectedShip.cost === 0;
+            const finalShippingCost = isFreeShipping ? 0 : selectedShip.cost;
+            const grandTotal = subtotal + finalShippingCost;
+
+            const shippingCostLabel = isFreeShipping 
+                ? (selectedShip.cost > 0 ? `GRATIS (Promo Min. Belanja)` : `Gratis`) 
+                : formatRupiah(finalShippingCost);
 
             // Format Pesan WhatsApp
             let message = `Halo *${storeConfig.storeName}*, saya ingin memesan produk berikut:\n\n`;
             message += `*DETAIL PESANAN:*\n`;
             message += `${itemsText}\n`;
-            message += `*Total Belanja:* ${formatRupiah(totalAmount)}\n`;
-            message += `_(Belum termasuk ongkos kirim)_\n\n`;
-            message += `*DATA PEMBELI:*\n`;
-            message += `• Nama: ${name}\n`;
-            message += `• Alamat: ${address}\n`;
-            message += `• Pengiriman: ${shipping}\n`;
-            message += `• Pembayaran: ${payment}\n`;
+            message += `• Subtotal Produk: ${formatRupiah(subtotal)}\n`;
+            message += `• Ongkos Kirim: ${shippingCostLabel}\n`;
+            message += `*TOTAL PEMBAYARAN: ${formatRupiah(grandTotal)}*\n\n`;
+            message += `*INFORMASI PENGIRIMAN & PEMBAYARAN:*\n`;
+            message += `• Nama Penerima: ${name}\n`;
+            message += `• Alamat Lengkap: ${address}\n`;
+            message += `• Layanan Kurir: ${selectedShip.name} (Est. ${selectedShip.estimate})\n`;
+            message += `• Metode Bayar: ${payment}\n`;
             if (notes) {
                 message += `• Catatan: ${notes}\n`;
             }
-            message += `\nMohon info ketersediaan stok dan total beserta ongkirnya. Terima kasih!`;
+            message += `\nMohon konfirmasi pesanan saya. Terima kasih!`;
 
             // Bersihkan nomor WA
             let waNumber = storeConfig.whatsappNumber.replace(/\D/g, '');
@@ -972,12 +1217,41 @@
         }
 
         // =====================================================================
-        // 7. MODE ADMIN / KELOLA PRODUK & TOKO
+        // 7. PROTEKSI PIN & MODE ADMIN / KELOLA PRODUK & TOKO
         // =====================================================================
+        function openPinModal() {
+            document.getElementById('pin-modal').classList.remove('hidden');
+            const input = document.getElementById('admin-pin-input');
+            input.value = '';
+            setTimeout(() => input.focus(), 100);
+            lucide.createIcons();
+        }
+
+        function closePinModal() {
+            document.getElementById('pin-modal').classList.add('hidden');
+        }
+
+        function verifyAdminPin(event) {
+            event.preventDefault();
+            const enteredPin = document.getElementById('admin-pin-input').value.trim();
+            const validPin = storeConfig.adminPin || STORE_CONFIG.adminPin;
+
+            if (enteredPin === validPin) {
+                closePinModal();
+                openAdminModal();
+                showToast("Login Admin berhasil!");
+            } else {
+                showToast("PIN Admin salah! Akses ditolak.", "error");
+                document.getElementById('admin-pin-input').value = '';
+                document.getElementById('admin-pin-input').focus();
+            }
+        }
+
         function openAdminModal() {
             document.getElementById('admin-modal').classList.remove('hidden');
             renderAdminProductList();
             loadSettingsForm();
+            updateGitHubExportSnippet();
             lucide.createIcons();
         }
 
@@ -1070,6 +1344,7 @@
             renderCategories();
             renderProducts();
             updateCartUI();
+            updateGitHubExportSnippet();
         }
 
         function editProduct(id) {
@@ -1106,39 +1381,71 @@
             renderCategories();
             renderProducts();
             updateCartUI();
+            updateGitHubExportSnippet();
             showToast("Produk dihapus dari katalog", "info");
         }
 
         // Pengaturan Toko
         function loadSettingsForm() {
             document.getElementById('set-store-name').value = storeConfig.storeName;
+            document.getElementById('set-admin-pin').value = storeConfig.adminPin || STORE_CONFIG.adminPin;
             document.getElementById('set-store-tagline').value = storeConfig.tagline;
             document.getElementById('set-store-wa').value = storeConfig.whatsappNumber;
+            document.getElementById('set-free-shipping').value = storeConfig.freeShippingMin || 0;
             document.getElementById('set-hero-title').value = storeConfig.heroTitle;
+            document.getElementById('set-shipping-hours').value = storeConfig.shippingHours || STORE_CONFIG.shippingHours;
         }
 
         function saveStoreSettings() {
             const name = document.getElementById('set-store-name').value.trim();
+            const pin = document.getElementById('set-admin-pin').value.trim();
             const tagline = document.getElementById('set-store-tagline').value.trim();
             const wa = document.getElementById('set-store-wa').value.trim();
+            const freeShip = parseInt(document.getElementById('set-free-shipping').value, 10) || 0;
             const heroTitle = document.getElementById('set-hero-title').value.trim();
+            const shipHours = document.getElementById('set-shipping-hours').value.trim();
 
-            if (!name || !wa) {
-                showToast("Nama Toko dan Nomor WhatsApp wajib diisi!", "error");
+            if (!name || !wa || !pin) {
+                showToast("Nama Toko, PIN Admin, dan Nomor WhatsApp wajib diisi!", "error");
                 return;
             }
 
             storeConfig = {
                 ...storeConfig,
                 storeName: name,
-                tagline: tagline || DEFAULT_CONFIG.tagline,
+                adminPin: pin,
+                tagline: tagline || STORE_CONFIG.tagline,
                 whatsappNumber: wa,
-                heroTitle: heroTitle || DEFAULT_CONFIG.heroTitle
+                freeShippingMin: freeShip,
+                heroTitle: heroTitle || STORE_CONFIG.heroTitle,
+                shippingHours: shipHours || STORE_CONFIG.shippingHours
             };
 
             saveDataToStorage();
             applyStoreConfig();
+            updateCartUI();
+            updateGitHubExportSnippet();
             showToast("Pengaturan toko berhasil disimpan!");
+        }
+
+        // Generator & Copy Kode Konfigurasi Permanen untuk GitHub
+        function updateGitHubExportSnippet() {
+            const codeArea = document.getElementById('github-export-code');
+            if (!codeArea) return;
+            const codeText = `const STORE_CONFIG = ${JSON.stringify(storeConfig, null, 4)};\n\nconst DEFAULT_PRODUCTS = ${JSON.stringify(products, null, 4)};`;
+            codeArea.value = codeText;
+        }
+
+        function copyConfigCodeForGitHub() {
+            const codeArea = document.getElementById('github-export-code');
+            codeArea.select();
+            codeArea.setSelectionRange(0, 99999);
+            try {
+                document.execCommand('copy');
+                showToast("Kode konfigurasi berhasil disalin! Tempelkan ke index.html di GitHub.");
+            } catch (err) {
+                showToast("Gagal menyalin otomatis, silakan blok & salin manual dari kotak teks.", "error");
+            }
         }
 
         // Export / Import JSON
@@ -1171,11 +1478,13 @@
                         products = imported.products;
                         saveDataToStorage();
                         applyStoreConfig();
+                        renderShippingOptions();
                         renderCategories();
                         renderProducts();
                         renderAdminProductList();
                         loadSettingsForm();
                         updateCartUI();
+                        updateGitHubExportSnippet();
                         showToast("Data toko berhasil di-import!");
                     } else {
                         showToast("Format file JSON tidak valid!", "error");
@@ -1208,11 +1517,13 @@
             localStorage.removeItem(STORAGE_KEYS.CART);
             loadData();
             applyStoreConfig();
+            renderShippingOptions();
             renderCategories();
             renderProducts();
             renderAdminProductList();
             loadSettingsForm();
             updateCartUI();
+            updateGitHubExportSnippet();
             resetConfirmPending = false;
             btn.textContent = "Reset Data Awal";
             btn.classList.remove('bg-red-600', 'text-white');
